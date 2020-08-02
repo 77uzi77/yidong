@@ -1,0 +1,17 @@
+#配置数据库相关信息
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/yidong?characterEncoding=utf8&serverTimezone=GMT
+    username: root
+    password: 1234
+#配置视图解析器，解析jsp页面
+  mvc:
+    view:
+      prefix: /
+      suffix: .jsp
+#配置项目名称路径
+server:
+  servlet:
+    context-path: /chengguo
+
