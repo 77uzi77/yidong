@@ -143,9 +143,9 @@
     </div>
     <div id = "specificInfo"></div>
     <div id = "deadline"></div>
-    <c:if test="${user.status == 3 || user.status == 4}">
-    <div><a href="${pageContext.request.contextPath}/transferInfo/download?id=${requestScope.gid}" style="color: red">下载转会信息</a></div>
-    </c:if>
+<%--    <c:if test="${user.status == 3 || user.status == 4}">--%>
+<%--    <div><a href="${pageContext.request.contextPath}/transferInfo/download?id=${requestScope.gid}" style="color: red">下载转会信息</a></div>--%>
+<%--    </c:if>--%>
     <span id="picture"></span>
 
 
@@ -184,10 +184,10 @@
 
 
 
-    <br/>
-    <div>相关推荐</div>
-    <hr/>
-    <div id="recommend"></div>
+<%--    <br/>--%>
+<%--    <div>相关推荐</div>--%>
+<%--    <hr/>--%>
+<%--    <div id="recommend"></div>--%>
 
 <%--    <c:if test="${user.status == 2 || user.status == 3 || user.status == 4}">--%>
 

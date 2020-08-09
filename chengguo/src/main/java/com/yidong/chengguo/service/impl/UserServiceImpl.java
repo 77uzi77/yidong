@@ -1,5 +1,6 @@
 package com.yidong.chengguo.service.impl;
 
+import com.yidong.chengguo.dao.IEnterpriseDao;
 import com.yidong.chengguo.dao.IUserDao;
 import com.yidong.chengguo.entity.User;
 import com.yidong.chengguo.service.IUserService;
@@ -8,6 +9,10 @@ import com.yidong.chengguo.utils.SimpleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -19,6 +24,9 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private IUserDao userDao;
+
+    @Autowired
+    private IEnterpriseDao enterpriseDao;
     /**
      * 保存用户
      */
@@ -72,7 +80,15 @@ public class UserServiceImpl implements IUserService {
         User user = userDao.login(username,password);
         if (user != null){
             if (user.getState().equals("-1")){
-                result[1] = "账号已被封禁....";
+                Date date = new Date();
+                SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd");
+                String currentDate = dateFormat.format(date);
+                if (user.getBanTime().compareTo(currentDate) > 0 ){
+                    result[1] = "账号已被封禁...请于"+user.getBanTime()+"后登陆";
+                }else{
+                    userDao.updateState("1",user.getId());
+                    result[1] = "true";
+                }
             }else if (user.getState().equals("0")){
                 result[1] = "账号尚未激活！请先激活！";
             }else{
@@ -120,5 +136,45 @@ public class UserServiceImpl implements IUserService {
         }
 
         return true;
+    }
+
+
+    /**
+     *    查询所有用户
+     */
+    @Override
+    public List<User> findAll() {
+        return userDao.findAll();
+    }
+
+    /**
+     *    封禁用户
+     */
+    @Override
+    public void banOne(Integer id,String banTime) {
+        userDao.banOne(id,banTime);
+    }
+
+    /**
+     *    通过用户认证
+     */
+    @Override
+    public void passIdentify(Integer id,String email) {
+        userDao.revise(id,"status","2");
+        enterpriseDao.updateState(id,"2");
+
+        String content = "你的企业认证已通过！";
+        MailUtils.sendMail(email,content,"通知邮件");
+    }
+
+    /**
+     *   拒绝用户认证
+     */
+    @Override
+    public void refuseIdentify(Integer id,String email) {
+        enterpriseDao.updateState(id,"-1");
+
+        String content = "很抱歉，你的企业认证申请没有通过，您可以尝试重新申请！";
+        MailUtils.sendMail(email,content,"通知邮件");
     }
 }

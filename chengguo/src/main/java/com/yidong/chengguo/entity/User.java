@@ -1,6 +1,8 @@
 package com.yidong.chengguo.entity;
 
 
+import java.sql.Date;
+
 /**
  * 用户实体类
  */
@@ -19,6 +21,8 @@ public class User {
     private String status;
     // 状态 默认 0 注册已激活1
     private String state;
+    //用户被封禁时间
+    private String banTime;
     // 用户标识码，用于用户激活
     private String code;
 
@@ -78,6 +82,14 @@ public class User {
         this.state = state;
     }
 
+    public void setBanTime(String banTime) {
+        this.banTime = banTime;
+    }
+
+    public String getBanTime() {
+        return banTime;
+    }
+
     public String getCode() {
         return code;
     }
@@ -96,6 +108,7 @@ public class User {
                 ", icon='" + icon + '\'' +
                 ", status='" + status + '\'' +
                 ", state='" + state + '\'' +
+                ", banTime=" + banTime +
                 ", code='" + code + '\'' +
                 '}';
     }

@@ -23,7 +23,7 @@
 
 
 
-    <title>企业需求管理</title>
+    <title>封禁用户</title>
 
     <!-- 1. 导入CSS的全局样式 -->
     <%--    <link href="css/bootstrap.min.css" rel="stylesheet">--%>
@@ -46,20 +46,44 @@
     </style>
 
     <script>
-        function deleteUser(id){
+        <%--function deleteUser(id){--%>
+        <%--    //用户安全提示--%>
+        <%--    if(confirm("您确定要拒绝吗？")){--%>
+        <%--        //访问路径--%>
+        <%--        location.href="${pageContext.request.contextPath}/enterprise/refuseOne?id="+id;--%>
+        <%--    }--%>
+        <%--}--%>
+
+        function banUser(id){
             //用户安全提示
-            if(confirm("您确定要拒绝吗？")){
-                //访问路径
-                location.href="${pageContext.request.contextPath}/enterprise/refuseOne?id="+id;
+            var banTime = document.getElementById("banTime"+id).value;
+            var time = getNowFormatDate();
+            if (banTime > time){
+                if(confirm("您确定要封禁该用户吗？")){
+                    //访问路径
+                    location.href="${pageContext.request.contextPath}/user/banOne?id="+id+"&banTime="+banTime;
+                }
+            }else{
+                alert("请选择正确的时间！");
             }
         }
 
-        function passUser(id){
-            //用户安全提示
-            if(confirm("您确定要通过吗？")){
-                //访问路径
-                location.href="${pageContext.request.contextPath}/enterprise/passOne?id="+id;
+
+        //获取当前时间，格式YYYY-MM-DD
+        function getNowFormatDate() {
+            var date = new Date();
+            var seperator1 = "-";
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var strDate = date.getDate();
+            if (month >= 1 && month <= 9) {
+                month = "0" + month;
             }
+            if (strDate >= 0 && strDate <= 9) {
+                strDate = "0" + strDate;
+            }
+            var currentdate = year + seperator1 + month + seperator1 + strDate;
+            return currentdate;
         }
 
         // window.onload = function(){
@@ -107,7 +131,7 @@
 </head>
 <body>
 <div class="container">
-    <h3 style="text-align: center">需求管理</h3>
+    <h3 style="text-align: center">用户管理</h3>
 
 <%--    <div style="float: left;">--%>
 
@@ -143,65 +167,53 @@
             <tr class="success">
                 <th><input type="checkbox" id="firstCb"></th>
                 <th>编号</th>
-                <th>标题</th>
-                <th>简介</th>
-                <th>详情</th>
-                <th>单位</th>
-                <th>预算</th>
-                <th>时间要求</th>
-                <th>报名者</th>
-                <th>联系方式</th>
-                <th>个人介绍</th>
+                <th>用户名</th>
+                <th>邮箱</th>
+                <th>头像</th>
                 <th>操作</th>
             </tr>
 
-            <c:forEach items="${demandManage}" var="demand" varStatus="s">
+            <c:forEach items="${users}" var="user" varStatus="s">
 <%--                <c:if test="${demand.result == '0'}">--%>
                 <tr>
-                    <td><input type="checkbox" name="uid" value="${demand.id}"></td>
+                    <td><input type="checkbox" name="uid" value="${user.id}"></td>
                     <td>${s.count}</td>
-                    <td>${demand.title}</td>
+                    <td>${user.username}</td>
 <%--                    <td><img src="images/${user.icon}" style="width: 50px;height: 50px;"></td>--%>
-                    <td>${demand.briefInfo}</td>
-                    <td>${demand.specificInfo}</td>
-                    <td>${demand.unit}</td>
-                    <td>${demand.budget}</td>
-                    <td>${demand.deadline}</td>
-                    <td>${demand.userName}</td>
-<%--                    <c:if test="${demand.userPhone != null}">--%>
-                        <td>${demand.userPhone}</td>
+                    <td>${user.email}</td>
+<%--                    <td>${user.message}</td>--%>
+                    <td><img src="images/${user.icon}" style="width: 50px;height: 50px;"/></td>
+                    
+<%--                    <td>${enterprise.linkName}</td>--%>
+<%--                    <td>${enterprise.phoneNum}</td>--%>
+<%--                    <td>${demand.deadline}</td>--%>
+<%--                    <td>${demand.userName}</td>--%>
+<%--&lt;%&ndash;                    <c:if test="${demand.userPhone != null}">&ndash;%&gt;--%>
+<%--                        <td>${demand.userPhone}</td>--%>
 <%--                    </c:if>--%>
 <%--                    <c:if test="${demand.userPhone == null}">--%>
 <%--                        <td></td>--%>
 <%--                    </c:if>--%>
 <%--                    <c:if test="${demand.userMessage != null}">--%>
-                        <td>${demand.userMessage}</td>
+<%--                        <td>${demand.userMessage}</td>--%>
 <%--                    </c:if>--%>
 <%--                    <c:if test="${demand.userMessage == null}">--%>
 <%--                        <td></td>--%>
 <%--                    </c:if>--%>
 
                     <td>
-                        <c:if test="${demand.userName != null}">
-                            <c:if test="${demand.result == '0'}">
-                                <a class="btn btn-default btn-sm" href="javascript:passUser(${demand.id});">通过</a>
-                                <a class="btn btn-default btn-sm" href="javascript:deleteUser(${demand.id});">拒绝</a>
-                            </c:if>
-                            <c:if test="${demand.result != '0'}">
-                                <span>${demand.result}</span>
-                            </c:if>
-                        </c:if>
-                        
-                        <c:if test="${demand.state == '0'}">
-                            <span>等待审核</span>
-                        </c:if>
-
-                        <c:if test="${demand.state == '-1'}">
-                            <span>该需求已被管理员拒绝</span>
-                        </c:if>
-<%--                        <a class="btn btn-default btn-sm" href="javascript:passUser(${demand.id});">通过</a>--%>
-<%--                        <a class="btn btn-default btn-sm" href="javascript:deleteUser(${demand.id});">拒绝</a>--%>
-<%--                        <a class="btn btn-default btn-sm" href="submit.jsp?user_name=${user.user_name}">转会</a>--%>
+<%--                            <c:if test="${demand.userName != null}">--%>
+                        <span>封禁到</span>
+                        <input type="date" id="banTime${user.id}" name="banTime"/>
+                    <a class="btn btn-default btn-sm" href="javascript:banUser(${user.id});">封禁</a>
+<%--                    <a class="btn btn-default btn-sm" href="javascript:deleteUser(${enterprise.id});">拒绝</a>--%>
+<%--                            </c:if>--%>
+<%--                            <c:if test="${demand.userName == null}">--%>
+<%--                                <a></a>--%>
+<%--                            </c:if>--%>
+<%--&lt;%&ndash;                        <a class="btn btn-default btn-sm" href="javascript:passUser(${demand.id});">通过</a>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                        <a class="btn btn-default btn-sm" href="javascript:deleteUser(${demand.id});">拒绝</a>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                        <a class="btn btn-default btn-sm" href="submit.jsp?user_name=${user.user_name}">转会</a>&ndash;%&gt;--%>
                     </td>
                 </tr>
 <%--                </c:if>--%>
@@ -216,12 +228,12 @@
 
 
 
-    <div class="register-right" >
-        <div class="register-in" >
-            <a class="book popup-with-zoom-anim button-isi zoomIn animated"
-               data-wow-delay=".5s" href="#small-dialog" style="color: red" >发布需求 »</a>
-        </div>
-    </div>
+<%--    <div class="register-right" >--%>
+<%--        <div class="register-in" >--%>
+<%--            <a class="book popup-with-zoom-anim button-isi zoomIn animated"--%>
+<%--               data-wow-delay=".5s" href="#small-dialog" style="color: red" >发布需求 »</a>--%>
+<%--        </div>--%>
+<%--    </div>--%>
 
 
 

@@ -13,7 +13,7 @@ public class MD5Util {
     public static void main(String[] args) {
 //
 
-        String md2Encode = md5Jdk("123456789");
+        String md2Encode = md5Jdk("admin");
         System.out.println("加密后为： " + md2Encode);
 //        System.out.println("加密后长度：" + md2Encode.length());
 //        System.out.println(LoggedUserSessionContext.sessionMap);

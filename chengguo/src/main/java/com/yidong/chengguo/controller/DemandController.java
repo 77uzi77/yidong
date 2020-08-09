@@ -69,5 +69,33 @@ public class DemandController {
         return "redirect:/personalManage.jsp";
     }
 
+    /**
+     *   管理员管理需求
+     */
+    @RequestMapping("enterpriseDemand")
+    public String enterpriseDemand(HttpSession session){
+        List<Demand> demands = demandService.findAll();
+        session.setAttribute("demands",demands);
+        return  "redirect:/enterpriseDemand.jsp";
+    }
 
+    /**
+     *     管理员通过企业需求
+     */
+    @RequestMapping("passOne")
+    public String passOne(Integer id,Integer enterpriseId,HttpSession session){
+        demandService.passOne(id,enterpriseId);
+
+        return enterpriseDemand(session);
+    }
+
+    /**
+     *     管理员拒绝企业需求
+     */
+    @RequestMapping("refuseOne")
+    public String refuseOne(Integer id,Integer enterpriseId,HttpSession session){
+        demandService.refuseOne(id,enterpriseId);
+
+        return enterpriseDemand(session);
+    }
 }

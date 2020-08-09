@@ -20,6 +20,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -269,5 +271,27 @@ public class UserController {
         // 转发到登录页面
         return "redirect:/login.jsp";
     }
+
+    /**
+     *     管理员查询所有用户
+     */
+    @RequestMapping("ban")
+    public String ban(HttpSession session){
+        List<User> users = userService.findAll();
+        session.setAttribute("users",users);
+        return "redirect:/banUser.jsp";
+    }
+
+    /**
+     *     管理员封禁用户
+     */
+    @RequestMapping("banOne")
+    public String banOne(Integer id, String banTime,HttpSession session){
+//        System.out.println(banTime);
+        userService.banOne(id,banTime);
+
+        return ban(session);
+    }
+
 
 }

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * 企业业务实现类
  */
@@ -72,5 +74,13 @@ public class EnterpriseServiceImpl implements IEnterpriseService {
         // 发送邮件通知用户
         String content = "您的报名需求已通过！";
         MailUtils.sendMail(userEmail,content,"通知邮件");
+    }
+
+    /**
+     *    查询所有待审核企业
+     */
+    @Override
+    public List<Enterprise> findAll() {
+        return enterpriseDao.findAll();
     }
 }

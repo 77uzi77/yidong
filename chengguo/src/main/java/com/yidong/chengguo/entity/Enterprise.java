@@ -21,6 +21,8 @@ public class Enterprise {
     // 企业发布的需求的集合
     private List<Demand> demands;
 
+    private User user;
+
     public Integer getId() {
         return id;
     }
@@ -77,6 +79,14 @@ public class Enterprise {
         this.demands = demands;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Enterprise{" +
@@ -87,6 +97,7 @@ public class Enterprise {
                 ", phoneNum='" + phoneNum + '\'' +
                 ", state='" + state + '\'' +
                 ", demands=" + demands +
+                ", user=" + user +
                 '}';
     }
 }

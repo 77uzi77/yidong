@@ -4,6 +4,8 @@ import com.yidong.chengguo.entity.Demand;
 import com.yidong.chengguo.entity.PageBean;
 import com.yidong.chengguo.entity.UserSign;
 
+import java.util.List;
+
 /**
  * 需求的业务接口
  */
@@ -20,4 +22,19 @@ public interface IDemandService {
      * 个人需求管理
      */
     UserSign personalManage(int id);
+
+    /**
+     *    查询所有需求
+     */
+    List<Demand> findAll();
+
+    /**
+     *     管理员通过企业需求
+     */
+    void passOne(Integer id,Integer enterpriseId);
+
+    /**
+     *     管理员拒绝企业需求
+     */
+    void refuseOne(Integer id,Integer enterpriseId);
 }

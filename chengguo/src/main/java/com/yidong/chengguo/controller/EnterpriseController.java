@@ -3,6 +3,7 @@ package com.yidong.chengguo.controller;
 import com.yidong.chengguo.entity.Enterprise;
 import com.yidong.chengguo.entity.User;
 import com.yidong.chengguo.service.IEnterpriseService;
+import com.yidong.chengguo.service.IUserService;
 import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * 企业控制类
@@ -22,6 +24,9 @@ public class EnterpriseController {
 
     @Autowired
     private IEnterpriseService enterpriseService;
+
+    @Autowired
+    private IUserService userService;
 
     /**
      *  用户进行企业认证
@@ -79,4 +84,36 @@ public class EnterpriseController {
         User user = (User) session.getAttribute("user");
         return demandManage(user.getId(),session);
     }
+
+    /**
+     *  企业认证
+     */
+    @RequestMapping("identify")
+    public String identify(HttpSession session){
+        List<Enterprise> enterprises= enterpriseService.findAll();
+        System.out.println(enterprises);
+        session.setAttribute("enterprises",enterprises);
+        return "redirect:/identify.jsp";
+    }
+
+    /**
+     *     管理员通过企业认证
+     */
+    @RequestMapping("passIdentify")
+    public String passIdentify(Integer id,String email,HttpSession session){
+        userService.passIdentify(id,email);
+
+        return identify(session);
+    }
+
+    /**
+     *     管理员拒绝企业认证
+     */
+    @RequestMapping("refuseIdentify")
+    public String refuseIdentify(Integer id,String email,HttpSession session){
+        userService.refuseIdentify(id,email);
+
+        return identify(session);
+    }
+
 }

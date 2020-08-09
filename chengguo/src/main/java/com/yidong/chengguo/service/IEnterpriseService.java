@@ -2,6 +2,8 @@ package com.yidong.chengguo.service;
 
 import com.yidong.chengguo.entity.Enterprise;
 
+import java.util.List;
+
 
 /**
  * 企业业务接口
@@ -32,4 +34,10 @@ public interface IEnterpriseService {
      * 通过用户报名
      */
     void passOne(Integer id);
+
+    /**
+     *    查询所有待审核企业
+     */
+    List<Enterprise> findAll();
+
 }

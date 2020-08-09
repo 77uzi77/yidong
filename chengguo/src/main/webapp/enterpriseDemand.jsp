@@ -46,19 +46,19 @@
     </style>
 
     <script>
-        function deleteUser(id){
+        function deleteUser(id,enterpriseId){
             //用户安全提示
             if(confirm("您确定要拒绝吗？")){
                 //访问路径
-                location.href="${pageContext.request.contextPath}/enterprise/refuseOne?id="+id;
+                location.href="${pageContext.request.contextPath}/demand/refuseOne?id="+id+"&enterpriseId="+enterpriseId;
             }
         }
 
-        function passUser(id){
+        function passUser(id,enterpriseId){
             //用户安全提示
             if(confirm("您确定要通过吗？")){
                 //访问路径
-                location.href="${pageContext.request.contextPath}/enterprise/passOne?id="+id;
+                location.href="${pageContext.request.contextPath}/demand/passOne?id="+id+"&enterpriseId="+enterpriseId;
             }
         }
 
@@ -107,7 +107,7 @@
 </head>
 <body>
 <div class="container">
-    <h3 style="text-align: center">需求管理</h3>
+    <h3 style="text-align: center">企业需求管理</h3>
 
 <%--    <div style="float: left;">--%>
 
@@ -149,14 +149,11 @@
                 <th>单位</th>
                 <th>预算</th>
                 <th>时间要求</th>
-                <th>报名者</th>
-                <th>联系方式</th>
-                <th>个人介绍</th>
                 <th>操作</th>
             </tr>
 
-            <c:forEach items="${demandManage}" var="demand" varStatus="s">
-<%--                <c:if test="${demand.result == '0'}">--%>
+            <c:forEach items="${demands}" var="demand" varStatus="s">
+                <c:if test="${demand.result == '0'}">
                 <tr>
                     <td><input type="checkbox" name="uid" value="${demand.id}"></td>
                     <td>${s.count}</td>
@@ -167,44 +164,34 @@
                     <td>${demand.unit}</td>
                     <td>${demand.budget}</td>
                     <td>${demand.deadline}</td>
-                    <td>${demand.userName}</td>
+<%--                    <td>${demand.userName}</td>--%>
 <%--                    <c:if test="${demand.userPhone != null}">--%>
-                        <td>${demand.userPhone}</td>
+<%--                        <td>${demand.userPhone}</td>--%>
 <%--                    </c:if>--%>
 <%--                    <c:if test="${demand.userPhone == null}">--%>
 <%--                        <td></td>--%>
 <%--                    </c:if>--%>
 <%--                    <c:if test="${demand.userMessage != null}">--%>
-                        <td>${demand.userMessage}</td>
+<%--                        <td>${demand.userMessage}</td>--%>
 <%--                    </c:if>--%>
 <%--                    <c:if test="${demand.userMessage == null}">--%>
 <%--                        <td></td>--%>
 <%--                    </c:if>--%>
 
                     <td>
-                        <c:if test="${demand.userName != null}">
-                            <c:if test="${demand.result == '0'}">
-                                <a class="btn btn-default btn-sm" href="javascript:passUser(${demand.id});">通过</a>
-                                <a class="btn btn-default btn-sm" href="javascript:deleteUser(${demand.id});">拒绝</a>
-                            </c:if>
-                            <c:if test="${demand.result != '0'}">
-                                <span>${demand.result}</span>
-                            </c:if>
-                        </c:if>
-                        
-                        <c:if test="${demand.state == '0'}">
-                            <span>等待审核</span>
-                        </c:if>
-
-                        <c:if test="${demand.state == '-1'}">
-                            <span>该需求已被管理员拒绝</span>
-                        </c:if>
+<%--                            <c:if test="${demand.userName != null}">--%>
+                                <a class="btn btn-default btn-sm" href="javascript:passUser('${demand.id}','${demand.enterpriseId}');">通过</a>
+                                <a class="btn btn-default btn-sm" href="javascript:deleteUser('${demand.id}','${demand.enterpriseId}');">拒绝</a>
+<%--                            </c:if>--%>
+<%--                            <c:if test="${demand.userName == null}">--%>
+<%--                                <a></a>--%>
+<%--                            </c:if>--%>
 <%--                        <a class="btn btn-default btn-sm" href="javascript:passUser(${demand.id});">通过</a>--%>
 <%--                        <a class="btn btn-default btn-sm" href="javascript:deleteUser(${demand.id});">拒绝</a>--%>
 <%--                        <a class="btn btn-default btn-sm" href="submit.jsp?user_name=${user.user_name}">转会</a>--%>
                     </td>
                 </tr>
-<%--                </c:if>--%>
+                </c:if>
 
             </c:forEach>
 
@@ -216,12 +203,12 @@
 
 
 
-    <div class="register-right" >
-        <div class="register-in" >
-            <a class="book popup-with-zoom-anim button-isi zoomIn animated"
-               data-wow-delay=".5s" href="#small-dialog" style="color: red" >发布需求 »</a>
-        </div>
-    </div>
+<%--    <div class="register-right" >--%>
+<%--        <div class="register-in" >--%>
+<%--            <a class="book popup-with-zoom-anim button-isi zoomIn animated"--%>
+<%--               data-wow-delay=".5s" href="#small-dialog" style="color: red" >发布需求 »</a>--%>
+<%--        </div>--%>
+<%--    </div>--%>
 
 
 

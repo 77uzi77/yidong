@@ -5,6 +5,9 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.sql.Date;
+import java.util.List;
+
 /**
  * 用户的Dao层
  */
@@ -58,4 +61,22 @@ public interface IUserDao {
      */
     @Update("update user set ${type} = #{data} where id = #{id}")
     void revise(Integer id, String type, String data);
+
+    /**
+     *     通过id查询用户
+     */
+    @Select("select username,email from user where id = #{id}")
+    User findOne(Integer id);
+
+    /**
+     *     查询所有用户和企业
+     */
+    @Select("select * from user where state = 1 and (status = 1 or status = 2)")
+    List<User> findAll();
+
+    /**
+     *   封禁用户
+     */
+    @Update("update user set state = -1 , banTime = #{banTime} where id = #{id}")
+    void banOne(Integer id, String banTime);
 }

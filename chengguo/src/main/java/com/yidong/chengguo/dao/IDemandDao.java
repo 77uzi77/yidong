@@ -104,4 +104,16 @@ public interface IDemandDao {
      */
     @Update("update demand set result = #{result} where id = #{id}")
     void updateResult(String result,Integer id);
+
+    /**
+     *     查询所有未审核的需求
+     */
+    @Select("select * from demand where state = 0")
+    List<Demand> findAll();
+
+    /**
+     *     更新需求状态
+     */
+    @Update("update demand set state = #{state} where id = #{id}")
+    void updateState(Integer id, String state);
 }

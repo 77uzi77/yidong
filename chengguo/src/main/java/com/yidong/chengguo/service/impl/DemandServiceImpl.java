@@ -1,11 +1,14 @@
 package com.yidong.chengguo.service.impl;
 
 import com.yidong.chengguo.dao.IDemandDao;
+import com.yidong.chengguo.dao.IEnterpriseDao;
+import com.yidong.chengguo.dao.IUserDao;
 import com.yidong.chengguo.entity.Demand;
 import com.yidong.chengguo.entity.PageBean;
 import com.yidong.chengguo.entity.User;
 import com.yidong.chengguo.entity.UserSign;
 import com.yidong.chengguo.service.IDemandService;
+import com.yidong.chengguo.utils.MailUtils;
 import com.yidong.chengguo.utils.SimpleUtils;
 import org.apache.ibatis.annotations.Insert;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,10 @@ public class DemandServiceImpl implements IDemandService {
 
     @Autowired
     private IDemandDao demandDao;
+
+    @Autowired
+    private IEnterpriseDao enterpriseDao;
+
 
     /**
      * 分页查询需求
@@ -72,5 +79,40 @@ public class DemandServiceImpl implements IDemandService {
     public UserSign personalManage(int id) {
         UserSign personalDemands =  demandDao.personalManage(id);
         return personalDemands;
+    }
+
+    /**
+     *    查询所有需求
+     */
+    @Override
+    public List<Demand> findAll() {
+        return demandDao.findAll();
+    }
+
+    /**
+     *     管理员通过企业需求
+     */
+    @Override
+    public void passOne(Integer id,Integer enterpriseId) {
+        demandDao.updateState(id,"1");
+
+        Integer uid = enterpriseDao.findUid(enterpriseId);
+        String email = demandDao.findUserEmail(uid);
+        String content = "您发布的需求已通过！！";
+        MailUtils.sendMail(email,content,"通知邮件");
+    }
+
+    /**
+     *     管理员拒绝企业需求
+     */
+    @Override
+    public void refuseOne(Integer id,Integer enterpriseId) {
+        demandDao.updateState(id,"-1");
+
+        Integer uid = enterpriseDao.findUid(enterpriseId);
+        String email = demandDao.findUserEmail(uid);
+        String content = "很抱歉，您发布的需求已被拒绝！";
+        MailUtils.sendMail(email,content,"通知邮件");
+
     }
 }
