@@ -9,6 +9,8 @@ public class Demand {
     private Integer id;
     // 企业id
     private Integer enterpriseId;
+    // 判断是否是唯一需求
+    private String isFirst;
     // 标题
     private String title;
     // 简介
@@ -46,6 +48,14 @@ public class Demand {
 
     public void setEnterpriseId(Integer enterpriseId) {
         this.enterpriseId = enterpriseId;
+    }
+
+    public String getIsFirst() {
+        return isFirst;
+    }
+
+    public void setIsFirst(String isFirst) {
+        this.isFirst = isFirst;
     }
 
     public String getTitle() {

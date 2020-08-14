@@ -56,19 +56,28 @@ public class DemandServiceImpl implements IDemandService {
     public void sign(String introduction, String linkName, String phoneNum, String uidStr, String demandIdStr) {
         int uid = Integer.parseInt(uidStr);
         int demandId = Integer.parseInt(demandIdStr);
-        // 判断该需求是否存在，不存在则报异常，通过catch捕获
-        try {
-            demandDao.check(uid,demandId);
-        }catch (Exception e){
-            // 捕获到异常，则增加需求
-            demandDao.sign(introduction,linkName,phoneNum,demandId);
-            demandDao.save(uid,demandId);
-            return;
-        }
+
 
         Demand demand = demandDao.findOne(demandId);
-        demandDao.addOne(demand.getEnterpriseId(),demand.getTitle(),demand.getBriefInfo(),demand.getSpecificInfo(),
-            demand.getUnit(),demand.getBudget(),demand.getDeadline(),demand.getState(),linkName,introduction,phoneNum);
+        if (demand.getUserName() == null){
+            demandDao.sign(introduction,linkName,phoneNum,demandId);
+        }else{
+            demand.setIsFirst("0");
+            demand.setUserName(linkName);
+            demand.setUserMessage(introduction);
+            demand.setUserPhone(phoneNum);
+            demandDao.addOne(demand);
+            demandId = demand.getId();
+            System.out.println(demandId);
+
+        }
+
+        if (demandDao.check(uid, demandId) == null){
+            // 如果中间表没有该报名信息
+//               demandDao.sign(introduction,linkName,phoneNum,demandId);
+            demandDao.save(uid,demandId);
+//               return;
+        }
 
     }
 
@@ -85,8 +94,8 @@ public class DemandServiceImpl implements IDemandService {
      *    查询所有需求
      */
     @Override
-    public List<Demand> findAll() {
-        return demandDao.findAll();
+    public List<Demand> findAll(String state) {
+        return demandDao.findAll(state);
     }
 
     /**

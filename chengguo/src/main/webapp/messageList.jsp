@@ -604,6 +604,7 @@
                 <a href="${pageContext.request.contextPath}/enterprise/identify" class="collection">审核企业认证</a>
                 <a href="${pageContext.request.contextPath}/user/ban" class="collection">封禁用户</a>
                 <a href="${pageContext.request.contextPath}/demand/enterpriseDemand" class="collection">审核企业需求</a>
+                <a href="${pageContext.request.contextPath}/demand/platformDemand" class="collection">平台需求</a>
                 <a href="${pageContext.request.contextPath}/user/exit" style="float: right">退出</a>
 
 <%--            <a href="${pageContext.request.contextPath}/userServlet/exit" style="float: right">退出</a>--%>

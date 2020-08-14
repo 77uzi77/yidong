@@ -160,7 +160,8 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public void passIdentify(Integer id,String email) {
-        userDao.revise(id,"status","2");
+        Integer uid = enterpriseDao.findUid(id);
+        userDao.revise(uid,"status","2");
         enterpriseDao.updateState(id,"2");
 
         String content = "你的企业认证已通过！";

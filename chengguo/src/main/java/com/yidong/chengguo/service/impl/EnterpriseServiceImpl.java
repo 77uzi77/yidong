@@ -2,6 +2,7 @@ package com.yidong.chengguo.service.impl;
 
 import com.yidong.chengguo.dao.IDemandDao;
 import com.yidong.chengguo.dao.IEnterpriseDao;
+import com.yidong.chengguo.entity.Demand;
 import com.yidong.chengguo.entity.Enterprise;
 import com.yidong.chengguo.service.IEnterpriseService;
 import com.yidong.chengguo.utils.MailUtils;
@@ -41,9 +42,20 @@ public class EnterpriseServiceImpl implements IEnterpriseService {
      * 发布需求
      */
     @Override
-    public void release(String enterpriseId, String title, String briefInfo, String specificInfo, String unit, String budget, String deadline) {
-        demandDao.addOne(Integer.parseInt(enterpriseId),title,briefInfo,specificInfo,unit,budget,
-                deadline,"0",null,null,null);
+//    public void release(String enterpriseId, String title, String briefInfo, String specificInfo, String unit, String budget, String deadline) {
+    public void release(Demand demand) {
+//        Demand demand = new Demand();
+//        demand.setEnterpriseId(Integer.parseInt(enterpriseId));
+        demand.setIsFirst("1");
+//        demand.setTitle(title);
+//        demand.setBriefInfo(briefInfo);
+//        demand.setSpecificInfo(specificInfo);
+//        demand.setUnit(unit);
+//        demand.setBudget(budget);
+//        demand.setDeadline(deadline);
+        demand.setState("0");
+
+        demandDao.addOne(demand);
     }
     /**
      * 拒绝用户报名

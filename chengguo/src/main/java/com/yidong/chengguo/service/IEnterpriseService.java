@@ -1,5 +1,6 @@
 package com.yidong.chengguo.service;
 
+import com.yidong.chengguo.entity.Demand;
 import com.yidong.chengguo.entity.Enterprise;
 
 import java.util.List;
@@ -23,7 +24,8 @@ public interface IEnterpriseService {
     /**
      * 发布需求
      */
-    void release(String enterpriseId, String title, String briefInfo, String specificInfo, String unit, String budget, String deadline);
+//    void release(String enterpriseId, String title, String briefInfo, String specificInfo, String unit, String budget, String deadline);
+    void release(Demand demand);
 
     /**
      * 拒绝用户报名

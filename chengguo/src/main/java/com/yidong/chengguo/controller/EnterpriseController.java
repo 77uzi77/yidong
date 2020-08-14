@@ -1,5 +1,6 @@
 package com.yidong.chengguo.controller;
 
+import com.yidong.chengguo.entity.Demand;
 import com.yidong.chengguo.entity.Enterprise;
 import com.yidong.chengguo.entity.User;
 import com.yidong.chengguo.service.IEnterpriseService;
@@ -57,10 +58,11 @@ public class EnterpriseController {
      */
     @ResponseBody
     @PostMapping("release")
-    public String release(String enterpriseId,String title,String briefInfo,String specificInfo,String unit,
-                          String budget,String deadline){
-
-        enterpriseService.release(enterpriseId,title,briefInfo,specificInfo,unit,budget,deadline);
+    public String release(Demand demand){
+//        System.out.println(demand);
+//        enterpriseService.release(enterpriseId,title,briefInfo,specificInfo,unit,budget,deadline);
+//        demand.setState("0");
+        enterpriseService.release(demand);
 
         return "true";
     }

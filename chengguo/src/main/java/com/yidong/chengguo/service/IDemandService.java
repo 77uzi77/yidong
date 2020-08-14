@@ -26,7 +26,7 @@ public interface IDemandService {
     /**
      *    查询所有需求
      */
-    List<Demand> findAll();
+    List<Demand> findAll(String state);
 
     /**
      *     管理员通过企业需求

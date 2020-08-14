@@ -74,7 +74,7 @@ public class DemandController {
      */
     @RequestMapping("enterpriseDemand")
     public String enterpriseDemand(HttpSession session){
-        List<Demand> demands = demandService.findAll();
+        List<Demand> demands = demandService.findAll("0");
         session.setAttribute("demands",demands);
         return  "redirect:/enterpriseDemand.jsp";
     }
@@ -97,5 +97,13 @@ public class DemandController {
         demandService.refuseOne(id,enterpriseId);
 
         return enterpriseDemand(session);
+    }
+
+    @RequestMapping("platformDemand")
+    public String platformDemand(HttpSession session){
+        List<Demand> demands = demandService.findAll("1");
+        session.setAttribute("demands",demands);
+
+        return "redirect:/platformDemand.jsp";
     }
 }

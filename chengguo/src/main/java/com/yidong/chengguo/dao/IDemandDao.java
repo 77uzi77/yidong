@@ -15,7 +15,7 @@ public interface IDemandDao {
     /**
      *  查询总记录数
      */
-    @Select("select count(*) from demand where state = 1 and (title like #{content}" +
+    @Select("select count(*) from demand where state = 1 and isFirst = 1 and (title like #{content}" +
             " or briefInfo like #{content} or specificInfo like #{content} or unit like #{content} " +
             " or budget like #{content})")
     int findTotalCount(String content);
@@ -23,7 +23,7 @@ public interface IDemandDao {
     /**
      *  分页查询需求
      */
-    @Select("select * from demand where state = 1 and (title like #{content}"  +
+    @Select("select * from demand where state = 1 and isFirst = 1 and (title like #{content}"  +
             " or briefInfo like #{content} or specificInfo like #{content} or unit like #{content} " +
             " or budget like #{content} )limit #{start},#{pageSize}")
     List<Demand> findByPage(int start, int pageSize, String content);
@@ -57,7 +57,7 @@ public interface IDemandDao {
      *  通过中间表，查询id信息
      */
     @Select("select id from usersign where userId = #{uid} and demandId = #{demandId}")
-    void check(int uid, int demandId);
+    Integer check(int uid, int demandId);
 
     /**
      *  通过id查询单个需求
@@ -68,11 +68,11 @@ public interface IDemandDao {
     /**
      *  增加需求
      */
-    @Insert("insert into demand (enterpriseId,title,briefInfo,specificInfo,unit,budget,deadline,state,userName," +
-            "userMessage,userPhone) values (#{enterpriseId},#{title},#{briefInfo},#{specificInfo},#{unit}," +
-            "#{budget},#{deadline},#{state},#{linkName},#{introduction},#{phoneNum})")
-    void addOne(Integer enterpriseId, String title, String briefInfo, String specificInfo, String unit, String budget,
-                String deadline, String state, String linkName, String introduction, String phoneNum);
+    @Insert("insert into demand (enterpriseId,isFirst,title,briefInfo,specificInfo,unit,budget,deadline,state,userName," +
+            "userMessage,userPhone) values (#{enterpriseId},#{isFirst},#{title},#{briefInfo},#{specificInfo},#{unit}," +
+            "#{budget},#{deadline},#{state},#{userName},#{userMessage},#{userPhone})")
+    @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
+    void addOne(Demand demand);
 
     /**
      *  通过中间表，进行多对多查询
@@ -108,8 +108,8 @@ public interface IDemandDao {
     /**
      *     查询所有未审核的需求
      */
-    @Select("select * from demand where state = 0")
-    List<Demand> findAll();
+    @Select("select * from demand where state = #{state}")
+    List<Demand> findAll(String state);
 
     /**
      *     更新需求状态
